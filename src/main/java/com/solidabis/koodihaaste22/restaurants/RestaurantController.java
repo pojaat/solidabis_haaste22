@@ -58,7 +58,6 @@ public class RestaurantController {
                                                   @PathVariable("city") String city,
                                                   HttpServletResponse response) throws IOException {
         String voterId = makeOrReturnVoterCookie(voterIdCookie, response);
-
         String html = source.loadCity(city);
         var restaurants = parser.parse(html);
         restaurants.forEach(repository::saveRestaurant);
@@ -70,6 +69,7 @@ public class RestaurantController {
 
         return RestaurantResponseDTO.builder()
                 .alreadyVoted(voteRepository.todaysVote(voterId, timeSource.today()))
+                .voterId(voterId)
                 .date(timeSource.today().format(DateTimeFormatter.ISO_LOCAL_DATE))
                 .restaurants(restaurantDTOs)
                 .build();
