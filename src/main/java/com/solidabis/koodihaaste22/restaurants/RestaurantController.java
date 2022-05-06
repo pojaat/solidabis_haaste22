@@ -69,7 +69,6 @@ public class RestaurantController {
 
         return RestaurantResponseDTO.builder()
                 .alreadyVoted(voteRepository.todaysVote(voterId, timeSource.today()))
-                .voterId(voterId)
                 .date(timeSource.today().format(DateTimeFormatter.ISO_LOCAL_DATE))
                 .restaurants(restaurantDTOs)
                 .build();

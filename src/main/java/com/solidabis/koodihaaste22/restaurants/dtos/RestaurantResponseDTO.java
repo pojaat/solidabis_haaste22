@@ -11,8 +11,6 @@ import java.util.List;
 public class RestaurantResponseDTO {
     @Schema(description = "If non-null, contains the voted restaurant id for today")
     private String alreadyVoted;
-    @Schema(description = "VoterID cookie")
-    private String voterId;
     @Schema(description = "Current date")
     private String date;
     @Schema(description = "List of restaurants")
