@@ -1,5 +1,12 @@
 # Solidabis koodihaaste 2022
 
+## Building
+Backend: `./gradlew bootRun`
+
+Frontend: `cd src/main/ui` & `npm start`
+
+## Ohjeet
+
 Tehtävänäsi on toteuttaa lounaspaikkaäänestyssovelluksen frontend valmista APIa vasten (työkalut saat valita itse).
 Arvosteluperusteet tärkeysjärjestyksessä:
 
