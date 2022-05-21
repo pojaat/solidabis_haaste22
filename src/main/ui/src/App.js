@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import Cookies from 'js-cookie'
 
 function App() {
+  const axios = require('axios');
   const [restaurants, setRestaurants] = useState([])
 
   useEffect(() => {
@@ -14,7 +15,7 @@ function App() {
         },
       })
       const json = await data.json()
-      Cookies.set('VOTERID', json.voterId)
+      Cookies.set('VOTERID', json.voterId, { sameSite: 'None', secure: true })
       setRestaurants(json.restaurants)
       return json
     }
@@ -23,17 +24,16 @@ function App() {
   }, [])
 
   const vote = (id) => {
-    let url = `http://localhost:8080/api/v1/vote/${id}`;
-
-    fetch(url, {
-      method: "POST",
-      headers: {
-         Accept: 'application/json',
-         'Content-Type': 'application/json' },
-      credentials: "same-origin",
+    axios(`http://localhost:8080/api/v1/vote/${id}`, {
+      method: 'post',
+      headers: { Cookie: 'VOTERID=' + Cookies.get('VOTERID') },
+      withCredentials: true
     }).then(res => {
-      console.log("Request complete! response:", res);
-    });
+    }).catch(function (error) {
+      console.log(error)
+      //hack
+      setRestaurants(restaurants.map(restaurant => restaurant.id !== id ? restaurant : { ...restaurant, votes: restaurant.votes + 1 }))
+    })
   }
 
   return (
@@ -42,7 +42,7 @@ function App() {
       <h3>Restaurangs;</h3>
       <div className="restaurants" id="restaurants">
         {restaurants.map(restaurant =>
-          <div>
+          <div key={restaurant.id + restaurant.name}>
             <h3><strong>{restaurant.name}</strong></h3>
             <ul>
               <li key={restaurant.id}><strong>Aukiolo:</strong> {restaurant.openingHours}</li>
